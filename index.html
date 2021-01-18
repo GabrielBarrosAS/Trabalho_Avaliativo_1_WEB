@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Título da página</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <section id='menuTop'>
+        <a id='textoMenuTop'href="https://dribbble.com/shots/14248099-Hierarchy-practice">Design escolhido</a>
+        <div id="divButton">
+            <button id='buttonBLUE' class="buttonTop">BLUE</button>
+            <button id='buttonGREEN' class="buttonTop">GREEN</button>
+            <button id='buttonRED' class="buttonTop">RED</button>
+        </div>
+    </section>
+
+    <section id='corpoDoSite'>
+        <div id="esquerda">
+            <div id="primeira-frase">
+                <h3> 
+                    <h4>
+                        VICENT<span class="cinza">LAW</span>
+                    </h4>
+                </h3>
+            </div>
+            
+            <div id="segunda-frase">
+                <h1>Vicent<br>Shwartch</br></h1>
+                <h5>BOSTON DIVORCE ATTORNEY</h5>
+            </div>
+            
+            <div id="terceira-frase">
+                <p>A long records of sucessfully resolving<br>complex divorce & family law matters.</br></p>
+            </div>
+            <div id="paraobotao">
+                <form>
+                    <div>
+                        <input class="submit" type="submit" value="Book a Call">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="direita">
+            <div id="navegacao">
+                <a href="index.html">Services</a> |
+                <a href="index.html">Pricing</a> |
+                <a href="index.html" onclick="creditos">Blog</a> |
+                <a href="index.html">Call Now</a>	
+            </div>
+        </div>
+    </section>
+
+    <div id='deixeSeuRecado'>Deixe seu recado!</div>
+    <section id='muralDeMensagens'> 
+        <div id='line1' class="line">
+            <div id='labelNome' class="label">Nome</div>
+            <input type="text" name="nome" id="nome" class="caixas" autocomplete="off">
+        </div>
+        <div id='line2' class="line">
+            <div id='labelMsg' class="label">Mensagem</div>
+            <input type="text" name="msg" id="msg" class="caixas" autocomplete="off">
+        </div>
+        <input type="button" value="Enviar" id='bottonEnviar' class="buttonEnviarExcluir">
+    </section>
+    <div id='msgs'></div>
+    <div id='rodape'>
+        <button type="button" id='creditos' class="buttonEnviarExcluir">Créditos</button>
+    </div>
+    <script>
+        class mensagem{
+            constructor(nome,mensagem){
+                this._mensagem = mensagem
+                this._nome = nome
+            }
+            get mensagem(){
+                return this._mensagem
+            }
+            get nome(){
+                return this._nome
+            }
+        }
+
+        var b = window.document.getElementsByClassName('buttonTop')
+        var enviar = window.document.getElementById('bottonEnviar')
+        var listaDeMensagens = []
+        var contadorDeMensagens = 0
+        var mural = window.document.getElementById('msgs')
+        var rodapeEvent = window.document.getElementById('creditos')
+
+        enviar.addEventListener('click',submit)
+        for (let index = 0; index < b.length; index++) {
+            b[index].addEventListener('click',mudarBackground)
+        }
+        rodapeEvent.addEventListener('click',creditos)
+
+        function mudarBackground(){
+            var corpo = window.document.getElementsByTagName('body')[0]
+            switch(this.id) {
+                case 'buttonBLUE':
+                    corpo.style.backgroundColor = 'blue'
+                    break;
+                case 'buttonGREEN':
+                    corpo.style.backgroundColor = 'green'                  
+                    break;
+                case 'buttonRED':
+                    corpo.style.backgroundColor = 'red'
+                    break;
+                default:
+                    break;
+            }
+        }
+        function submit(){
+            var entrada = window.document.getElementsByClassName('caixas')
+            var obj = new mensagem(entrada[0].value,entrada[1].value)
+
+            var novaDiv = criarDiv(obj)
+            listaDeMensagens.push(novaDiv)
+            novaDiv.setAttribute('class','divMsg label')
+            mural.appendChild(novaDiv)
+            entrada[0].value = ''
+            entrada[1].value = ''
+        }
+
+        function criarDiv(obj){
+            var novaDiv = window.document.createElement('div')
+            var quebra = window.document.createElement('br')
+            var textCampo1 = window.document.createTextNode(obj.nome +': ' + obj.mensagem)
+            
+            var nova = window.document.createElement('div')//Div para habilitar a quebra de linhas nas mensagens
+            nova.setAttribute('class','quebraDeLinha')
+            nova.appendChild(textCampo1)
+            
+            var novoButton = criarBotao()
+            novaDiv.appendChild(nova)
+            novaDiv.appendChild(novoButton)
+            contadorDeMensagens++
+            return novaDiv
+        }
+        function criarBotao(){
+            var novoButton = window.document.createElement('button')
+            var txtButton = window.document.createTextNode('Excluir')
+            novoButton.appendChild(txtButton)
+            novoButton.addEventListener("click",excluir)
+            novoButton.setAttribute('id','msg' + contadorDeMensagens)
+            novoButton.setAttribute('class','buttonEnviarExcluir')
+            novoButton.style.marginTop = '0%'
+            return novoButton
+        }
+        function excluir(){
+            var index = window.document.getElementById(this.id)
+            for (let i = 0; i < mural.children.length; i++) {
+                console.log(mural.children[i])
+                if(mural.children[i] === index.parentElement){
+                    mural.removeChild(index.parentElement)
+                }
+            }
+        }
+
+        function creditos(){
+            window.alert('DESENVOLVIMENTO DE SOFTWARE PARA WEB\nMaurício Matoso de Pontes\nGabriel Barros Aragão Silva')
+        }
+    </script>
+</body>
+</html>
